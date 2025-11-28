@@ -1,17 +1,18 @@
 <?php
 namespace MyCompany\AdminLogger\Observer;
 
-use Magento\Framework\Event\ObserverInterface;
-use Magento\Framework\Event\Observer;
-use MyCompany\AdminLogger\Model\ActionLogFactory;
 use Magento\Backend\Model\Auth\Session;
-use MyCompany\AdminLogger\Helper\Config;
-use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
-use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use MyCompany\AdminLogger\Helper\Config;
+use MyCompany\AdminLogger\Model\ActionLogFactory;
 use MyCompany\AdminLogger\Model\ResourceModel\ActionLog as ActionLogResource;
 use Psr\Log\LoggerInterface;
+
 class LogAdminAction implements ObserverInterface
 {
     protected $logFactory;
@@ -36,9 +37,9 @@ class LogAdminAction implements ObserverInterface
         DateTime $dateTime,
         Json $jsonSerializer,
         RequestInterface $request,
+        LoggerInterface $logger,
         string $actionType = 'unknown',
         string $entityType = 'unknown',
-        LoggerInterface $logger
     ) {
         $this->logFactory = $logFactory;
         $this->actionLogResource = $actionLogResource;
@@ -64,7 +65,9 @@ class LogAdminAction implements ObserverInterface
         $allowedActions = $this->configHelper->getLoggedActionTypes();
         $allowedEntities = $this->configHelper->getLoggedEntities();
 
-         if (!in_array($actionType, $allowedActions) || !in_array($entityType, $allowedEntities)) { return; }
+        if (!in_array($actionType, $allowedActions) || !in_array($entityType, $allowedEntities)) {
+            return;
+        }
 
         $entityId = null;
         $requestData = null;

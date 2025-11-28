@@ -35,7 +35,8 @@
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">textRange</item>
-                    <item name="sorting" xsi:type="string">desc</item> <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="sorting" xsi:type="string">desc</item>
+                    <item name="label" xsi:type="string" translate="true">ID</item>
                 </item>
             </argument>
         </column>
@@ -72,6 +73,7 @@
                 </item>
             </argument>
         </column>
+
         <column name="created_at" class="Magento\Ui\Component\Listing\Columns\Date">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -82,5 +84,14 @@
                 </item>
             </argument>
         </column>
+
+        <actionsColumn name="actions" class="MyCompany\AdminLogger\Ui\Component\Listing\Column\Actions">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">log_id</item>
+                    <item name="urlEntityParamName" xsi:type="string">id</item>
+                </item>
+            </argument>
+        </actionsColumn>
     </columns>
 </listing>

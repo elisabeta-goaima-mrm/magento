@@ -1,0 +1,82 @@
+<?php
+/** @var \MyCompany\AdminLogger\Block\Adminhtml\Log\View $block */
+/** @var \Magento\Framework\Escaper $escaper */
+
+$log = $block->getLog();
+$requestData = $log->getRequestData();
+
+$jsonFormatted = '';
+if ($requestData) {
+    $decoded = json_decode($requestData);
+    if ($decoded) {
+        $jsonFormatted = json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    } else {
+        $jsonFormatted = $requestData;
+    }
+}
+?>
+
+<div class="page-main-actions">
+    <div class="page-actions-placeholder"></div>
+    <div class="page-actions" data-ui-id="page-actions-toolbar-content-header">
+        <div class="page-actions-inner" data-title="Log Details">
+            <div class="page-actions-buttons">
+                <button id="back" title="Back" type="button" class="action-default scalable back" onclick="location.href = '<?= $escaper->escapeUrl($block->getBackUrl()) ?>';">
+                    <span>Back</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="admin__table-wrapper">
+    <table class="data-table admin__table-primary">
+        <thead>
+        <tr class="headings">
+            <th class="col-label">Field</th>
+            <th class="col-value">Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><strong>ID</strong></td>
+            <td><?= $escaper->escapeHtml($log->getId()) ?></td>
+        </tr>
+        <tr>
+            <td><strong>Date</strong></td>
+            <td><?= $escaper->escapeHtml($log->getCreatedAt()) ?></td>
+        </tr>
+        <tr>
+            <td><strong>Admin User</strong></td>
+            <td><?= $escaper->escapeHtml($log->getAdminUsername()) ?></td>
+        </tr>
+        <tr>
+            <td><strong>Action</strong></td>
+            <td><span class="grid-severity-notice"><span><?= $escaper->escapeHtml($log->getActionType()) ?></span></span></td>
+        </tr>
+        <tr>
+            <td><strong>Entity Type</strong></td>
+            <td><?= $escaper->escapeHtml($log->getEntityType()) ?></td>
+        </tr>
+        <tr>
+            <td><strong>Entity ID</strong></td>
+            <td><?= $escaper->escapeHtml($log->getEntityId()) ?></td>
+        </tr>
+        <tr>
+            <td><strong>IP Address</strong></td>
+            <td><?= $escaper->escapeHtml($log->getIpAddress()) ?></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<br/>
+<h3>Request Data (JSON)</h3>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend">Payload</h4>
+    </div>
+    <div class="fieldset">
+        <pre style="background: #f5f5f5; padding: 15px; border: 1px solid #ccc; overflow: auto;"><?= $escaper->escapeHtml($jsonFormatted) ?></pre>
+    </div>
+</div>
