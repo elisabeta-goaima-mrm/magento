@@ -49,8 +49,27 @@
         </arguments>
     </type>
 
-    <!-- 2. Definim Colectia Virtuala pentru Grid (SearchResult) -->
-    <!-- Aceasta permite filtrarea si sortarea in tabel -->
+    <virtualType name="MyCompany\AdminLogger\Observer\OrderSave" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">save</argument>
+            <argument name="entityType" xsi:type="string">order</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\CmsPageSave" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">save</argument>
+            <argument name="entityType" xsi:type="string">cms_page</argument>
+        </arguments>
+    </virtualType>
+
+    <virtualType name="MyCompany\AdminLogger\Observer\CmsPageDelete" type="MyCompany\AdminLogger\Observer\LogAdminAction">
+        <arguments>
+            <argument name="actionType" xsi:type="string">delete</argument>
+            <argument name="entityType" xsi:type="string">cms_page</argument>
+        </arguments>
+    </virtualType>
+
     <virtualType name="MyCompany\AdminLogger\Model\ResourceModel\ActionLog\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
             <argument name="mainTable" xsi:type="string">my_company_admin_action_log</argument>

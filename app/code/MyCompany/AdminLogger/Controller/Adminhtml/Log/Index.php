@@ -19,6 +19,7 @@ class Index extends Action
 
     public function execute()
     {
+      //  phpinfo(); die;
         $resultPage = $this->resultPageFactory->create();
         $resultPage->getConfig()->getTitle()->prepend(__('Admin Action Logs'));
         return $resultPage;

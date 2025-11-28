@@ -24,4 +24,15 @@
         <observer name="mycompany_logger_product_edit" instance="MyCompany\AdminLogger\Observer\ProductEdit" />
     </event>
 
+    <event name="sales_order_save_after">
+        <observer name="mycompany_logger_order_save" instance="MyCompany\AdminLogger\Observer\OrderSave" />
+    </event>
+
+    <event name="cms_page_save_after">
+        <observer name="mycompany_logger_cms_page_save" instance="MyCompany\AdminLogger\Observer\CmsPageSave" />
+    </event>
+
+    <event name="cms_page_delete_after">
+        <observer name="mycompany_logger_cms_page_delete" instance="MyCompany\AdminLogger\Observer\CmsPageDelete" />
+    </event>
 </config>
