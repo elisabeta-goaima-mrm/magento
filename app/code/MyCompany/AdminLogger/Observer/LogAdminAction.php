@@ -10,7 +10,8 @@ use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\App\RequestInterface;
-
+use MyCompany\AdminLogger\Model\ResourceModel\ActionLog as ActionLogResource;
+use Psr\Log\LoggerInterface;
 class LogAdminAction implements ObserverInterface
 {
     protected $logFactory;
@@ -21,22 +22,26 @@ class LogAdminAction implements ObserverInterface
     protected $jsonSerializer;
     protected $request;
 
-    // Proprietati noi pentru injectare
     protected $actionType;
     protected $entityType;
+    protected $actionLogResource;
+    protected $logger;
 
     public function __construct(
         ActionLogFactory $logFactory,
+        ActionLogResource $actionLogResource,
         Session $authSession,
         Config $configHelper,
         RemoteAddress $remoteAddress,
         DateTime $dateTime,
         Json $jsonSerializer,
         RequestInterface $request,
-        string $actionType = 'unknown', // Injectat via di.xml
-        string $entityType = 'unknown'  // Injectat via di.xml
+        string $actionType = 'unknown',
+        string $entityType = 'unknown',
+        LoggerInterface $logger
     ) {
         $this->logFactory = $logFactory;
+        $this->actionLogResource = $actionLogResource;
         $this->authSession = $authSession;
         $this->configHelper = $configHelper;
         $this->remoteAddress = $remoteAddress;
@@ -45,6 +50,7 @@ class LogAdminAction implements ObserverInterface
         $this->request = $request;
         $this->actionType = $actionType;
         $this->entityType = $entityType;
+        $this->logger = $logger;
     }
 
     public function execute(Observer $observer)
@@ -52,25 +58,20 @@ class LogAdminAction implements ObserverInterface
         if (!$this->configHelper->isEnabled()) {
             return;
         }
-
-        // Folosim valorile injectate in constructor
         $actionType = $this->actionType;
         $entityType = $this->entityType;
 
         $allowedActions = $this->configHelper->getLoggedActionTypes();
         $allowedEntities = $this->configHelper->getLoggedEntities();
 
-        // Optional: Filtrare stricta
-        // if (!in_array($actionType, $allowedActions) || !in_array($entityType, $allowedEntities)) { return; }
+         if (!in_array($actionType, $allowedActions) || !in_array($entityType, $allowedEntities)) { return; }
 
         $entityId = null;
         $requestData = null;
 
         if ($actionType == 'save' || $actionType == 'delete') {
-            // Incercam sa luam obiectul specific (ex: $observer->getProduct()) sau cel generic
             $eventObject = $observer->getData($entityType) ?: $observer->getData('object');
 
-            // Fallback pentru Customer care vine uneori ca 'customer_data_object'
             if (!$eventObject && $entityType == 'customer') {
                 $eventObject = $observer->getData('customer');
             }
@@ -104,9 +105,9 @@ class LogAdminAction implements ObserverInterface
                 'user_agent' => $this->request->getHeader('User-Agent'),
                 'created_at' => $this->dateTime->gmtDate()
             ]);
-            $log->save();
+            $this->actionLogResource->save($log);
         } catch (\Exception $e) {
-            // Silent fail
+            $this->logger->error('AdminLogger Error: ' . $e->getMessage());
         }
     }
 }

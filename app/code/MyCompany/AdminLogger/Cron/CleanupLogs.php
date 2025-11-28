@@ -5,19 +5,23 @@ namespace MyCompany\AdminLogger\Cron;
 use MyCompany\AdminLogger\Model\ResourceModel\ActionLog\CollectionFactory;
 use MyCompany\AdminLogger\Helper\Config;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use MyCompany\AdminLogger\Model\ResourceModel\ActionLog as ActionLogResource;
 
 class CleanupLogs
 {
     protected $collectionFactory;
     protected $configHelper;
     protected $date;
+    protected $actionLogResource;
 
     public function __construct(
         CollectionFactory $collectionFactory,
+        ActionLogResource $actionLogResource,
         Config $configHelper,
         DateTime $date
     ) {
         $this->collectionFactory = $collectionFactory;
+        $this->actionLogResource = $actionLogResource;
         $this->configHelper = $configHelper;
         $this->date = $date;
     }
@@ -37,7 +41,7 @@ class CleanupLogs
         $collection->addFieldToFilter('created_at', ['lt' => $dateLimit]);
 
         foreach ($collection as $log) {
-            $log->delete();
+            $this->actionLogResource->delete($log);
         }
     }
 }
