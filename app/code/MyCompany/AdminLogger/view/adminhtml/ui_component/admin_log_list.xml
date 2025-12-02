@@ -2,8 +2,8 @@
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">mycompany_adminlogger_log_listing.mycompany_adminlogger_log_listing_data_source</item>
-            <item name="deps" xsi:type="string">mycompany_adminlogger_log_listing.mycompany_adminlogger_log_listing_data_source</item>
+            <item name="provider" xsi:type="string">admin_log_list.mycompany_adminlogger_log_listing_data_source</item>
+            <item name="deps" xsi:type="string">admin_log_list.mycompany_adminlogger_log_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">mycompany_adminlogger_log_columns</item>
     </argument>
@@ -40,9 +40,25 @@
         <filters name="listing_filters"/>
         <paging name="listing_paging"/>
 
-        <exportButton name="export_button"/>
+        <exportButton name="export_button">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="selectProvider" xsi:type="string">admin_log_list.admin_log_list.mycompany_adminlogger_log_columns.ids</item>
+                </item>
+            </argument>
+        </exportButton>
     </listingToolbar>
+
     <columns name="mycompany_adminlogger_log_columns">
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="resizeEnabled" xsi:type="boolean">false</item>
+                    <item name="resizeDefaultWidth" xsi:type="string">55</item>
+                    <item name="indexField" xsi:type="string">log_id</item>
+                </item>
+            </argument>
+        </selectionsColumn>
         <column name="log_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -102,9 +118,7 @@
                 <item name="config" xsi:type="array">
                     <item name="indexField" xsi:type="string">log_id</item>
                     <item name="urlEntityParamName" xsi:type="string">id</item>
-
                     <item name="exportable" xsi:type="boolean">false</item>
-
                 </item>
             </argument>
         </actionsColumn>
