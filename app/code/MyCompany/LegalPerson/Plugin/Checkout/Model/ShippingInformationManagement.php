@@ -79,9 +79,6 @@ class ShippingInformationManagement
         return $result;
     }
 
-    /**
-     * Cauta o cheie in array multidimensional (pentru ca structura payload-ului variaza)
-     */
     private function findValueRecursive($array, $keySearch) {
         if (!is_array($array)) {
             return null;

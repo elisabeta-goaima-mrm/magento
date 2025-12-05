@@ -44,7 +44,7 @@ class AddLegalAttributes implements DataPatchInterface
             'required' => false,
             'visible' => true,
             'system' => 0,
-            'user_defined' => true, // <--- LINIE NOUA CRITICA
+            'user_defined' => true,
             'position' => 145,
         ]);
 

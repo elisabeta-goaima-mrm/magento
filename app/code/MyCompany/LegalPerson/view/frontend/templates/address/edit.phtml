@@ -3,6 +3,11 @@
 $company = $block->getAddress()->getCustomAttribute('legal_company') ? $block->getAddress()->getCustomAttribute('legal_company')->getValue() : '';
 $cui = $block->getAddress()->getCustomAttribute('legal_cui') ? $block->getAddress()->getCustomAttribute('legal_cui')->getValue() : '';
 $isLegal = !empty($cui);
+
+$getAttrVal = function($code) use ($block) {
+    $attr = $block->getAddress()->getCustomAttribute($code);
+    return $attr ? $block->escapeHtmlAttr($attr->getValue()) : '';
+};
 ?>
 <form class="form-address-edit"
       action="<?= $block->escapeUrl($block->getSaveUrl()) ?>"
@@ -34,6 +39,7 @@ $isLegal = !empty($cui);
                 <input type="text" name="legal_cui" id="legal_cui" value="<?= $block->escapeHtmlAttr($cui) ?>" title="CUI" class="input-text">
             </div>
         </div>
+
         <?= $block->getNameBlockHtml() ?>
 
         <div class="field company">
@@ -79,6 +85,32 @@ $isLegal = !empty($cui);
             </div>
         </div>
 
+        <div class="field additional-details">
+            <div class="field legal-address-short-field">
+                <label class="label" for="street_number"><span><?= $block->escapeHtml(__('Numar')) ?></span></label>
+                <div class="control">
+                    <input type="text" name="street_number" id="street_number" value="<?= $getAttrVal('street_number') ?>" title="<?= $block->escapeHtmlAttr(__('Numar')) ?>" class="input-text">
+                </div>
+            </div>
+            <div class="field legal-address-short-field">
+                <label class="label" for="building"><span><?= $block->escapeHtml(__('Bloc')) ?></span></label>
+                <div class="control">
+                    <input type="text" name="building" id="building" value="<?= $getAttrVal('building') ?>" title="<?= $block->escapeHtmlAttr(__('Bloc')) ?>" class="input-text">
+                </div>
+            </div>
+            <div class="field legal-address-short-field">
+                <label class="label" for="floor"><span><?= $block->escapeHtml(__('Etaj')) ?></span></label>
+                <div class="control">
+                    <input type="text" name="floor" id="floor" value="<?= $getAttrVal('floor') ?>" title="<?= $block->escapeHtmlAttr(__('Etaj')) ?>" class="input-text">
+                </div>
+            </div>
+            <div class="field legal-address-short-field">
+                <label class="label" for="apartment"><span><?= $block->escapeHtml(__('Apartament')) ?></span></label>
+                <div class="control">
+                    <input type="text" name="apartment" id="apartment" value="<?= $getAttrVal('apartment') ?>" title="<?= $block->escapeHtmlAttr(__('Apartament')) ?>" class="input-text">
+                </div>
+            </div>
+        </div>
         <?php if ($this->helper(\Magento\Customer\Helper\Address::class)->isVatAttributeVisible()): ?>
             <div class="field taxvat">
                 <label class="label" for="taxvat"><span><?= $block->escapeHtml(__('VAT Number')) ?></span></label>
@@ -102,12 +134,17 @@ $isLegal = !empty($cui);
                 <input type="text" id="region" name="region" value="<?= $block->escapeHtmlAttr($block->getRegion()) ?>"  title="<?= $block->escapeHtmlAttr(__('State/Province')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('region')) ?>"<?= (!$block->getConfig('general/region/display_all')) ? ' disabled="disabled"' : '' ?>/>
             </div>
         </div>
+
         <div class="field city required">
             <label class="label" for="city"><span><?= $block->escapeHtml(__('City')) ?></span></label>
             <div class="control">
                 <input type="text" name="city" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>" title="<?= $block->escapeHtmlAttr(__('City')) ?>" class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('city')) ?>" id="city">
+                <select id="city_select" class="validate-select" style="display:none;">
+                    <option value=""><?= __('Please select a city') ?></option>
+                </select>
             </div>
         </div>
+
         <div class="field zip required">
             <label class="label" for="zip"><span><?= $block->escapeHtml(__('Zip/Postal Code')) ?></span></label>
             <div class="control">
@@ -148,45 +185,13 @@ $isLegal = !empty($cui);
         </div>
     </div>
 </form>
-<div class="field additional-details">
-    <div class="control" style="display: flex; gap: 10px; margin-top: 10px;">
-        <div style="flex:1">
-            <label class="label"><span><?= $block->escapeHtml(__('Numar')) ?></span></label>
-            <input type="text" name="street_number" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('street_number') ? $block->getAddress()->getCustomAttribute('street_number')->getValue() : '') ?>" class="input-text">
-        </div>
-        <div style="flex:1">
-            <label class="label"><span><?= $block->escapeHtml(__('Bloc')) ?></span></label>
-            <input type="text" name="building" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('building') ? $block->getAddress()->getCustomAttribute('building')->getValue() : '') ?>" class="input-text">
-        </div>
-        <div style="flex:1">
-            <label class="label"><span><?= $block->escapeHtml(__('Etaj')) ?></span></label>
-            <input type="text" name="floor" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('floor') ? $block->getAddress()->getCustomAttribute('floor')->getValue() : '') ?>" class="input-text">
-        </div>
-        <div style="flex:1">
-            <label class="label"><span><?= $block->escapeHtml(__('Apartament')) ?></span></label>
-            <input type="text" name="apartment" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCustomAttribute('apartment') ? $block->getAddress()->getCustomAttribute('apartment')->getValue() : '') ?>" class="input-text">
-        </div>
-    </div>
-</div>
 
-<div class="field city required">
-    <label class="label" for="city"><span><?= $block->escapeHtml(__('City')) ?></span></label>
-    <div class="control">
-        <input type="text" name="city" value="<?= $block->escapeHtmlAttr($block->getAddress()->getCity()) ?>"
-               title="<?= $block->escapeHtmlAttr(__('City')) ?>"
-               class="input-text <?= $block->escapeHtmlAttr($this->helper(\Magento\Customer\Helper\Address::class)->getAttributeValidationClass('city')) ?>"
-               id="city">
-
-        <select id="city_select" class="validate-select" style="display:none;">
-            <option value=""><?= __('Please select a city') ?></option>
-        </select>
-    </div>
-</div>
 <script>
     require(['jquery', 'mage/url', 'mage/mage'], function($, url){
         var form = $('#form-validate');
         form.mage('validation', {});
 
+        // === LEGAL ENTITY LOGIC ===
         var checkbox = $('#is_legal_checkbox');
         var legalFields = $('.legal-field');
         var legalInputs = $('.legal-field input');
@@ -205,6 +210,7 @@ $isLegal = !empty($cui);
                 legalFields.show();
                 legalInputs.addClass('required-entry');
 
+                // Ascundem campurile standard irelevante
                 firstnameContainer.hide();
                 lastnameContainer.hide();
                 companyContainer.hide();
@@ -244,7 +250,6 @@ $isLegal = !empty($cui);
 
         function loadCities(regionId) {
             if(!regionId) return;
-
             $.ajax({
                 url: url.build('legalperson/city/index'),
                 data: { region_id: regionId },
@@ -276,7 +281,6 @@ $isLegal = !empty($cui);
         regionSelect.on('change', function(){
             loadCities($(this).val());
         });
-
         citySelect.on('change', function(){
             cityInput.prop('disabled', false);
             cityInput.val($(this).val());

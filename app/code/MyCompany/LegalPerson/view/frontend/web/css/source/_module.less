@@ -1,7 +1,10 @@
 & when (@media-common = true) {
-    .checkout-index-index {
+    .checkout-index-index,
+    .customer-address-edit,
+    .customer-address-form {
 
-        div[name$=".city"] {
+        div[name$=".city"],
+        .field.city {
 
             .admin__action-multiselect-wrap {
                 width: 100% !important;
@@ -39,7 +42,6 @@
 
             .admin__action-multiselect-menu-inner {
                 display: none !important;
-
                 position: absolute;
                 top: 100%;
                 left: 0;
@@ -64,10 +66,8 @@
                 padding: 8px 10px !important;
                 margin: 0 !important;
                 cursor: pointer;
-
                 color: #333 !important;
                 background-color: #fff;
-
                 border-bottom: 1px solid #f1f1f1;
                 font-size: 13px;
                 display: block;
@@ -95,7 +95,9 @@
                     color: #333 !important;
                 }
 
-                label { display: none; }
+                label {
+                    display: none;
+                }
             }
 
             .admin__action-multiselect-label {
@@ -104,21 +106,41 @@
                 padding: 5px;
             }
         }
+    }
 
-        .legal-address-short-field {
-            box-sizing: border-box;
-            float: left;
-            width: 25%;
-            padding-right: 10px;
-            clear: none !important;
-            margin-bottom: 20px;
+    .legal-address-short-field {
+        box-sizing: border-box;
+        float: left;
+        width: 25%;
+        padding-right: 10px;
+        clear: none !important;
+        margin-bottom: 20px;
 
-            @media (max-width: 768px) {
-                width: 50%;
-                &:nth-child(even) { padding-right: 0; }
-            }
-            .control input { width: 100%; }
-            &:last-child { padding-right: 0; }
+        @media (max-width: 768px) {
+            width: 50%;
+            &:nth-child(even) { padding-right: 0; }
+        }
+
+        .control input {
+            width: 100%;
+        }
+
+        &:last-child {
+            padding-right: 0;
+        }
+
+        label.label {
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+    }
+
+    .field.additional-details {
+        margin-bottom: 10px;
+        &:after {
+            content: "";
+            display: table;
+            clear: both;
         }
     }
 }

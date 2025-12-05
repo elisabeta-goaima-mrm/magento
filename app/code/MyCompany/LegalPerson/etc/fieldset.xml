@@ -8,6 +8,18 @@
             <field name="legal_company">
                 <aspect name="to_order_address" />
             </field>
+            <field name="street_number">
+                <aspect name="to_order_address" />
+            </field>
+            <field name="building">
+                <aspect name="to_order_address" />
+            </field>
+            <field name="floor">
+                <aspect name="to_order_address" />
+            </field>
+            <field name="apartment">
+                <aspect name="to_order_address" />
+            </field>
         </fieldset>
 
         <fieldset id="customer_address">
@@ -15,6 +27,18 @@
                 <aspect name="to_quote_address" />
             </field>
             <field name="legal_company">
+                <aspect name="to_quote_address" />
+            </field>
+            <field name="street_number">
+                <aspect name="to_quote_address" />
+            </field>
+            <field name="building">
+                <aspect name="to_quote_address" />
+            </field>
+            <field name="floor">
+                <aspect name="to_quote_address" />
+            </field>
+            <field name="apartment">
                 <aspect name="to_quote_address" />
             </field>
         </fieldset>

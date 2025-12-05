@@ -8,6 +8,7 @@
                     {{depend legal_cui}}CUI: {{var legal_cui}}{{/depend}}
                     {{if street1}}{{var street1}}
                     {{/if}}
+                    {{depend street_number}}Nr. {{var street_number}} {{/depend}}{{depend building}}Bl. {{var building}} {{/depend}}{{depend floor}}Et. {{var floor}} {{/depend}}{{depend apartment}}Ap. {{var apartment}}{{/depend}}
                     {{depend city}}{{var city}},  {{/depend}}{{depend region}}{{var region}}, {{/depend}}{{depend postcode}}{{var postcode}}{{/depend}}
                     {{depend country_name}}{{var country_name}}{{/depend}}
                     T: {{depend telephone}}{{var telephone}}{{/depend}}
@@ -18,6 +19,10 @@
 {{depend legal_company}}<strong>Companie:</strong> {{var legal_company}}<br/>{{/depend}}
 {{depend legal_cui}}<strong>CUI:</strong> {{var legal_cui}}<br/>{{/depend}}
 {{if street1}}{{var street1}}<br/>{{/if}}
+{{depend street_number}}Nr. {{var street_number}}, {{/depend}}
+{{depend building}}Bl. {{var building}}, {{/depend}}
+{{depend floor}}Et. {{var floor}}, {{/depend}}
+{{depend apartment}}Ap. {{var apartment}}<br/>{{/depend}}
 {{if street2}}{{var street2}}<br/>{{/if}}
 {{if street3}}{{var street3}}<br/>{{/if}}
 {{if street4}}{{var street4}}<br/>{{/if}}

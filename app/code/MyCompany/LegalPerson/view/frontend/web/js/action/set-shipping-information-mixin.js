@@ -5,9 +5,6 @@ define([
 ], function ($, wrapper, quote) {
     'use strict';
 
-    /**
-     * Funcție auxiliară pentru a transforma City din Array în String
-     */
     function normalizeCity(address) {
         if (address && address.city && Array.isArray(address.city)) {
             address.city = address.city.length ? address.city[0] : '';

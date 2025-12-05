@@ -33,6 +33,9 @@ class AddAddressDetailsAttributes implements DataPatchInterface
             'apartment'     => 'Apartament'
         ];
 
+        $attributeSetId = $customerSetup->getDefaultAttributeSetId('customer_address');
+        $attributeGroupId = $customerSetup->getDefaultAttributeGroupId('customer_address', $attributeSetId);
+
         $sortOrder = 80;
 
         foreach ($attributes as $code => $label) {
@@ -49,6 +52,8 @@ class AddAddressDetailsAttributes implements DataPatchInterface
 
             $attribute = $customerSetup->getEavConfig()->getAttribute('customer_address', $code);
             $attribute->addData([
+                'attribute_set_id' => $attributeSetId,
+                'attribute_group_id' => $attributeGroupId,
                 'used_in_forms' => ['adminhtml_customer_address', 'customer_address_edit', 'customer_register_address']
             ]);
             $this->attributeRepository->save($attribute);

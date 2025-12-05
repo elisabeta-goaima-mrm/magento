@@ -2,12 +2,12 @@
 namespace MyCompany\LegalPerson\Plugin\Checkout\Model;
 
 use Magento\Checkout\Api\PaymentInformationManagementInterface;
-use Magento\Quote\Api\Data\PaymentInterface;
-use Magento\Quote\Api\Data\AddressInterface;
-use Magento\Quote\Api\CartRepositoryInterface;
-use Magento\Quote\Model\ResourceModel\Quote\Address as AddressResource;
-use Magento\Quote\Model\Quote\AddressFactory;
 use Magento\Framework\Webapi\Rest\Request;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Api\Data\AddressInterface;
+use Magento\Quote\Api\Data\PaymentInterface;
+use Magento\Quote\Model\Quote\AddressFactory;
+use Magento\Quote\Model\ResourceModel\Quote\Address as AddressResource;
 use Psr\Log\LoggerInterface;
 
 class PaymentInformationManagement
@@ -17,6 +17,15 @@ class PaymentInformationManagement
     protected $quoteAddressFactory;
     protected $logger;
     protected $request;
+
+    protected $customAttributesList = [
+        'legal_cui',
+        'legal_company',
+        'street_number',
+        'building',
+        'floor',
+        'apartment'
+    ];
 
     public function __construct(
         CartRepositoryInterface $cartRepository,
@@ -34,66 +43,70 @@ class PaymentInformationManagement
 
     public function afterSavePaymentInformation(
         PaymentInformationManagementInterface $subject,
-                                              $result,
-                                              $cartId,
+        $result,
+        $cartId,
         PaymentInterface $paymentMethod,
         AddressInterface $billingAddress = null
     ) {
-        $this->logger->info('LegalPerson Billing: START processing CartID ' . $cartId);
-
         try {
             $bodyParams = $this->request->getBodyParams();
             $billingData = $bodyParams['billingAddress'] ?? [];
 
-            $cuiValue = null;
-            $companyValue = null;
+            $valuesToSave = [];
+            foreach ($this->customAttributesList as $key) {
+                $val = null;
 
-            if (!empty($billingData['extension_attributes'])) {
-                $ext = $billingData['extension_attributes'];
-                $cuiValue = $ext['legal_cui'] ?? null;
-                $companyValue = $ext['legal_company'] ?? null;
-            }
+                if (!empty($billingData['extension_attributes'][$key])) {
+                    $val = $billingData['extension_attributes'][$key];
+                }
 
-            if ((!$cuiValue || !$companyValue) && !empty($billingData['customAttributes'])) {
-                foreach ($billingData['customAttributes'] as $attr) {
-                    if (($attr['attribute_code'] ?? '') === 'legal_cui') $cuiValue = $attr['value'];
-                    if (($attr['attribute_code'] ?? '') === 'legal_company') $companyValue = $attr['value'];
+                if (!$val && !empty($billingData['customAttributes'])) {
+                    foreach ($billingData['customAttributes'] as $attr) {
+                        if (($attr['attribute_code'] ?? '') === $key) {
+                            $val = $attr['value'];
+                            break;
+                        }
+                    }
+                }
+
+                if ($val !== null) {
+                    $valuesToSave[$key] = $val;
                 }
             }
 
-            if (!$cuiValue && !$companyValue) {
-                $this->logger->info('LegalPerson Billing: Trying copy from Shipping...');
+            $quote = $this->cartRepository->getActive($cartId);
+            $shippingAddress = $quote->getShippingAddress();
 
-                $quote = $this->cartRepository->getActive($cartId);
-                $shippingAddress = $quote->getShippingAddress();
+            if ($shippingAddress && $shippingAddress->getId()) {
+                $freshShipping = $this->quoteAddressFactory->create()->load($shippingAddress->getId());
 
-                if ($shippingAddress->getId()) {
-                    $freshShipping = $this->quoteAddressFactory->create()->load($shippingAddress->getId());
-                    $cuiValue = $freshShipping->getData('legal_cui');
-                    $companyValue = $freshShipping->getData('legal_company');
+                foreach ($this->customAttributesList as $key) {
+                    if (!isset($valuesToSave[$key])) {
+                        $shippingVal = $freshShipping->getData($key);
+                        if ($shippingVal) {
+                            $valuesToSave[$key] = $shippingVal;
+                        }
+                    }
                 }
             }
 
-            $this->logger->info("LegalPerson Billing Values found: CUI=" . ($cuiValue ?? 'NULL'));
-
-            if ($cuiValue || $companyValue) {
-                $quote = $this->cartRepository->getActive($cartId);
+            if (!empty($valuesToSave)) {
                 $quoteBillingAddress = $quote->getBillingAddress();
 
                 if ($quoteBillingAddress && $quoteBillingAddress->getId()) {
                     $realBillingModel = $this->quoteAddressFactory->create()->load($quoteBillingAddress->getId());
 
                     if ($realBillingModel->getId()) {
-                        $realBillingModel->setData('legal_cui', $cuiValue);
-                        $realBillingModel->setData('legal_company', $companyValue);
+                        foreach ($valuesToSave as $key => $value) {
+                            $realBillingModel->setData($key, $value);
+                        }
 
                         $this->addressResource->save($realBillingModel);
-                        $this->logger->info("LegalPerson Billing: SUCCESS - Saved to database.");
                     }
                 }
             }
         } catch (\Exception $e) {
-            $this->logger->error('LegalPerson Billing CRITICAL: ' . $e->getMessage());
+            $this->logger->error('LegalPerson Billing Error: ' . $e->getMessage());
         }
 
         return $result;

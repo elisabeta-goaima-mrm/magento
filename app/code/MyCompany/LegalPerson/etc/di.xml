@@ -19,4 +19,13 @@
         </arguments>
     </type>
 
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="import_cities" xsi:type="object">MyCompany\LegalPerson\Console\Command\ImportCities</item>
+                <item name="fix_attributes" xsi:type="object">MyCompany\LegalPerson\Console\Command\FixAttributesCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
 </config>
