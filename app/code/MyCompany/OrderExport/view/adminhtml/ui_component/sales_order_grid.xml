@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_columns">
+        <column name="export_status">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">MyCompany\OrderExport\Model\Config\Source\ExportStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Export Status</item>
+                    <item name="visible" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </column>
+    </columns>
+
+    <listingToolbar name="listing_top">
+        <massaction name="listing_massaction">
+            <action name="retry_export">
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="type" xsi:type="string">retry_export</item>
+                        <item name="label" xsi:type="string" translate="true">Retry Export</item>
+                        <item name="url" xsi:type="url" path="mycompany_orderexport/order/massRetry"/>
+                    </item>
+                </argument>
+            </action>
+        </massaction>
+    </listingToolbar>
+</listing>

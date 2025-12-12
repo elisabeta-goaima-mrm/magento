@@ -380,6 +380,7 @@ return [
         'Magento_WishlistSampleData' => 1,
         'MyCompany_AdminLogger' => 1,
         'MyCompany_LegalPerson' => 1,
+        'MyCompany_OrderExport' => 1,
         'MyCompany_SimplePay' => 1,
         'MyCompany_StorePickup' => 1,
         'PayPal_Braintree' => 1,
