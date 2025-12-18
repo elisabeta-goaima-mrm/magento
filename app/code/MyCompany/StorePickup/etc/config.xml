@@ -9,6 +9,7 @@
                 <name>Store Pickup</name>
                 <price>0.00</price>
                 <specificerrmsg>This shipping method is not available at the moment</specificerrmsg>
+<!--                all allowed countries-->
                 <sallowspecific>0</sallowspecific>
             </storepickup>
         </carriers>

@@ -1,0 +1,17 @@
+<div id="knockout-calculator-app" data-bind="scope: 'discount-calculator-scope'">
+    <!-- ko template: getTemplate() --><!-- /ko -->
+</div>
+
+<script type="text/x-magento-init">
+    {
+        "#knockout-calculator-app": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "discount-calculator-scope": {
+                        "component": "js/view/calculator"
+                    }
+                }
+            }
+        }
+    }
+</script>

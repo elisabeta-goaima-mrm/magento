@@ -1,6 +1,8 @@
 <?php
 namespace MyCompany\StorePickup\Plugin\Checkout;
 
+use Magento\Checkout\Api\Data\ShippingInformationInterface;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 class ShippingInformationManagement
@@ -9,7 +11,7 @@ class ShippingInformationManagement
     protected $logger;
 
     public function __construct(
-        \Magento\Quote\Api\CartRepositoryInterface $quoteRepository,
+        CartRepositoryInterface $quoteRepository,
         LoggerInterface $logger
     ) {
         $this->quoteRepository = $quoteRepository;
@@ -19,7 +21,7 @@ class ShippingInformationManagement
         \Magento\Checkout\Model\ShippingInformationManagement $subject,
         $result,
         $cartId,
-        \Magento\Checkout\Api\Data\ShippingInformationInterface $addressInformation
+        ShippingInformationInterface $addressInformation
     ) {
 
         $shippingAddress = $addressInformation->getShippingAddress();

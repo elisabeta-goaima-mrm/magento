@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="page.main.title" remove="true" />
+        <referenceBlock name="breadcrumbs" remove="true" />
+
+        <referenceContainer name="page.top">
+            <block class="Magento\Framework\View\Element\Text" name="promo.bar" before="-">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+            <div class="homepage-promo-bar">
+               Free delivery for orders over 200 euros!
+            </div>
+        ]]></argument>
+                </arguments>
+            </block>
+
+        </referenceContainer>
+
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="discount.calculator"
+                   template="Magento_Cms::calculator.phtml"
+                   before="-"/>
+        </referenceContainer>
+    </body>
+</page>
+<!--
+this file is going to override the file cms_index_index.xml located at vendor/magento/module-cms/layout/frontend/layout
+with this we customize the homepage
+-->

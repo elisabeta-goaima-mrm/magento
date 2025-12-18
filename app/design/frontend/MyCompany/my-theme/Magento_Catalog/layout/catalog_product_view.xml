@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <move element="product.reviews.summary" destination="product.info.main" after="page.main.title" />
+
+        <referenceBlock name="product.info.mailto" remove="true" />
+        <referenceBlock name="catalog.compare.sidebar" remove="true" />
+        <referenceBlock name="view.addto.compare" remove="true" />
+
+        <referenceContainer name="product.info.main">
+            <block class="Magento\Framework\View\Element\Text" name="product.trust.badges" after="product.info.addtocart">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+                        <div class="product-trust-badges">
+                            <div class="trust-item">
+                                <div class="trust-text">Fast shipping</div>
+                            </div>
+                            <div class="trust-item bordered">
+                                <div class="trust-text">Return period 30 days</div>
+                            </div>
+                            <div class="trust-item bordered">
+                                <div class="trust-text">Guaranty</div>
+                            </div>
+                        </div>
+                    ]]></argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

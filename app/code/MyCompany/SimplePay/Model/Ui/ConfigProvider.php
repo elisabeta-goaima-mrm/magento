@@ -16,7 +16,6 @@ class ConfigProvider implements ConfigProviderInterface
         $this->scopeConfig = $scopeConfig;
     }
 
-
     public function getConfig()
     {
         return [

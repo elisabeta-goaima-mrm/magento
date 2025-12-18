@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Text" name="checkout.trust.support" before="-">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+            <div class="checkout-support-block">
+                <div class="support-text">
+                    Do you need help? Send us an email at support@luma.com
+                </div>
+                <div class="secure-payment">
+                    Secure payment
+                </div>
+            </div>
+        ]]></argument>
+                </arguments>
+            </block>
+
+        </referenceContainer>
+
+        <referenceBlock name="footer_links" remove="true" />
+    </body>
+</page>

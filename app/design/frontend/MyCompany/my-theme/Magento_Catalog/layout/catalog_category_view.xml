@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<page layout="2columns-left" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+
+        <move element="category.image" destination="columns.top" after="breadcrumbs" />
+
+        <move element="category.description" destination="content" after="-" />
+
+        <referenceBlock name="catalog.compare.sidebar" remove="true" />
+        <referenceBlock name="wishlist_sidebar" remove="true" />
+        <referenceBlock name="sidebar.additional" remove="true" />
+
+        <referenceContainer name="content">
+            <block class="Magento\Framework\View\Element\Text" name="category.promo.msg" before="category.products">
+                <arguments>
+                    <argument name="text" xsi:type="string"><![CDATA[
+            <div class="category-promo-message">
+                Weekly offer: buy 2 get one at 50% price!
+            </div>
+        ]]></argument>
+                </arguments>
+            </block>
+
+        </referenceContainer>
+
+    </body>
+</page>

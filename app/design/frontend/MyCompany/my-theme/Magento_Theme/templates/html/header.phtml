@@ -1,0 +1,41 @@
+<?php
+/**
+ * Custom Header Template
+ * Overrides: vendor/magento/module-theme/view/frontend/templates/html/header.phtml
+ */
+
+/**
+ * @var $block \Magento\Theme\Block\Html\Header
+ */
+$welcomeMessage = $block->getWelcome();
+?>
+
+<div class="custom-announcement-bar header-bar"
+     data-mage-init='{"promoBar": {"autoClose": true, "closeDelay": 3000}}'>
+    🎉 FREE DELIVERY FOR ORDERS OVER 200 EUROS!
+</div>
+<?php switch ($block->getShowPart()):
+    case 'welcome': ?>
+        <li class="greet welcome" data-bind="scope: 'customer'">
+            <span data-bind="text: customer().fullname ? new String('<?= $block->escapeHtml(__('Welcome, %1!', '%1')) ?>').replace('%1', customer().fullname) : '<?= $block->escapeHtml($welcomeMessage) ?>'"></span>
+        </li>
+        <script type="text/x-magento-init">
+            {
+                "*": {
+                    "Magento_Ui/js/core/app": {
+                        "components": {
+                            "customer": {
+                                "component": "Magento_Customer/js/view/customer"
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+        <?php break; ?>
+
+    <?php case 'other': ?>
+        <?= $block->getChildHtml() ?>
+        <?php break; ?>
+
+    <?php endswitch; ?>

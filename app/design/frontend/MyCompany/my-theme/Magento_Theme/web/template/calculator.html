@@ -1,0 +1,24 @@
+<div class="calculator-component" style="max-width: 300px; padding: 20px; background: #f4f4f4; border: 1px solid #ccc; margin: 20px 0;">
+    <h3 style="margin-top:0">Discount Calculator </h3>
+
+    <div class="field">
+        <label>Original price:</label>
+        <input type="number" data-bind="value: price, valueUpdate: 'keyup'" style="width: 100%; margin-bottom: 10px;">
+    </div>
+
+    <div class="field">
+        <label>Discount (%):</label>
+        <input type="number" data-bind="value: discount, valueUpdate: 'keyup'" style="width: 100%; margin-bottom: 10px;">
+    </div>
+
+    <hr>
+
+    <div class="result" style="font-size: 18px; font-weight: bold;">
+        Final price:
+        <span style="color: #2e7d32;" data-bind="text: finalPrice"></span> RON
+    </div>
+
+    <div style="font-size: 12px; color: #666; margin-top: 5px;">
+        (You save: <span data-bind="text: price() - finalPrice()"></span> RON)
+    </div>
+</div>

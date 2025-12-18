@@ -2,19 +2,19 @@
 
 namespace MyCompany\StorePickup\Model\Carrier;
 
-use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Quote\Model\Quote\Address\RateRequest;
 use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
 use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
+use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
 use Magento\Shipping\Model\Rate\ResultFactory;
 use Psr\Log\LoggerInterface;
-use Magento\Quote\Model\Quote\Address\RateRequest;
 
 class StorePickup extends AbstractCarrier implements CarrierInterface
 {
+    //    this is the group id from system.xml or the tag from config.xml
     protected $_code = 'storepickup';
-
     protected $_isFixed = true;
     protected $rateResultFactory;
     protected $rateMethodFactory;
@@ -55,12 +55,13 @@ class StorePickup extends AbstractCarrier implements CarrierInterface
         }
 
         $method->setPrice($shippingPrice);
-        $method->setCost($shippingPrice);
+
+        // intern cost, how much does it cost us this shipping
+        $method->setData('cost', $shippingPrice);
 
         $result->append($method);
 
         return $result;
-
 
     }
     public function isTrackingAvailable()
@@ -71,10 +72,5 @@ class StorePickup extends AbstractCarrier implements CarrierInterface
     public function getAllowedMethods()
     {
         return [$this->_code => $this->getConfigData('title')];
-    }
-
-    public function isValid($value)
-    {
-        // TODO: Implement isValid() method.
     }
 }
