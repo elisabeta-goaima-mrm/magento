@@ -379,6 +379,7 @@ return [
         'Magento_WishlistGraphQl' => 1,
         'Magento_WishlistSampleData' => 1,
         'MyCompany_AdminLogger' => 1,
+        'MyCompany_BestSellerIndexer' => 1,
         'MyCompany_LegalPerson' => 1,
         'MyCompany_OrderExport' => 1,
         'MyCompany_SimplePay' => 1,

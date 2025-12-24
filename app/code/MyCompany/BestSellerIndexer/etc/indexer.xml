@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Indexer/etc/indexer.xsd">
+    <indexer id="mycompany_bestseller_indexer" view_id="mycompany_bestseller_indexer" class="MyCompany\BestSellerIndexer\Model\Indexer\SoldQty">
+        <title translate="true">Best Seller (Sold quantity)</title>
+        <description translate="true">Calculates total quantity sold per product and updated sold_qty attribute</description>
+    </indexer>
+</config>
